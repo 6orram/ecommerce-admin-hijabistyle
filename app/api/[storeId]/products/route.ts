@@ -12,7 +12,7 @@ export async function POST(
 
     const body = await req.json();
 
-    const { name, price, categoryId, colorId, sizeId, images, isFeatured, isArchived } = body;
+    const { name, price, categoryId, colorId, sizeId, seasonId, images, isFeatured, isArchived } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 403 });
@@ -42,6 +42,10 @@ export async function POST(
       return new NextResponse("Size id is required", { status: 400 });
     }
 
+    if (!seasonId) {
+      return new NextResponse("Season id is required", { status: 400 });
+    }
+
     if (!params.storeId) {
       return new NextResponse("Store id is required", { status: 400 });
     }
@@ -66,6 +70,7 @@ export async function POST(
         categoryId,
         colorId,
         sizeId,
+        seasonId,
         storeId: params.storeId,
         images: {
           createMany: {
@@ -93,6 +98,7 @@ export async function GET(
     const categoryId = searchParams.get('categoryId') || undefined;
     const colorId = searchParams.get('colorId') || undefined;
     const sizeId = searchParams.get('sizeId') || undefined;
+    const seasonId = searchParams.get('seasonId') || undefined;
     const isFeatured = searchParams.get('isFeatured');
 
     if (!params.storeId) {
@@ -105,6 +111,7 @@ export async function GET(
         categoryId,
         colorId,
         sizeId,
+        seasonId,
         isFeatured: isFeatured ? true : undefined,
         isArchived: false,
       },
@@ -113,6 +120,7 @@ export async function GET(
         category: true,
         color: true,
         size: true,
+        season: true,
       },
       orderBy: {
         createdAt: 'desc',
