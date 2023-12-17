@@ -37,7 +37,8 @@ const formSchema = z.object({
   sizeId: z.string().min(1),
   seasonId: z.string().min(1),
   isFeatured: z.boolean().default(false).optional(),
-  isArchived: z.boolean().default(false).optional()
+  isArchived: z.boolean().default(false).optional(),
+  description: z.string().min(0)
 });
 
 type ProductFormValues = z.infer<typeof formSchema>
@@ -75,6 +76,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     price: parseFloat(String(initialData?.price)),
   } : {
     name: '',
+    description: '',
     images: [],
     price: 0,
     categoryId: '',
@@ -276,6 +278,19 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Product Description" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
